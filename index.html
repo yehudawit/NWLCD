@@ -12,12 +12,14 @@
 
 <!-- EmailJS Script -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-    (function(){
-        emailjs.init({
-    publicKey: "ugP1IMz3UqAuyW49K"}); // Replace with your EmailJS public key
-    })();
+    // Initialize EmailJS
+    emailjs.init({
+        publicKey: "ugP1IMz3UqAuyW49K" // Replace with your EmailJS public key
+    });
 
+    // Test button click
     document.getElementById('send-test').addEventListener('click', function() {
         const statusDiv = document.getElementById('status');
         statusDiv.textContent = "Sending...";
