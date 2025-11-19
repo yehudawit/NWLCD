@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
-    <style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NW London Communal Calendar</title>
+  <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f7f8;
@@ -23,7 +24,10 @@
             max-width: 400px;
         }
         h2 {
-                       font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+                   font-weight: bold;
             margin-bottom: 5px;
             display: block;
         }
@@ -59,11 +63,53 @@
         .error {
             color: red;
         }
-    </style>
+        /* Spinner Styles */
+        .spinner {
+            display: none;
+            margin: 10px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007BFF;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    header {
+      background-color: #4285f4;
+      color: white;
+     0;
+      overflow: hidden;
+    }
+    .calendar-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.5em; }
+      header p { font-size: 1em; padding: 0 10px; }
+      .calendar-container { padding-bottom: 100%; }
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>📅 NW London Community Calendar</h1>
+    <p>Stay updated with upcoming events and Simchas</p>
+  </header>
+  <div class="calendar-container">
+    <iframe src="https://calendar.google.com/calendar/embed?src=M2I2YTVmZDI4N2E5MGZhZDNlNWQzMjc4ZmQxMGY0NjE2MjMyZTUxMGFhYzE0NzRjOGZhZTE5NzkyNWRmZjE4ZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&ctz=Europe%2FLondon"></iframe>
+  </div>
+
     <div class="form-container">
-        <h2>Contact Us</h2>
+        <h2>Register your Event Here</h2>
         <form id="contact-form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required>
@@ -78,7 +124,9 @@
             <textarea id="message" name="message" rows="5" required></textarea>
 
             <button type="submit">Submit</button>
-        class="status" id="status"></div>
+        </form>
+        <div class="spinner" id="spinner"></div>
+        <div class="status" id="status"></div>
     </div>
 
     <!-- EmailJS Script -->
@@ -91,8 +139,10 @@
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const statusDiv = document.getElementById('status');
-            statusDiv.textContent = "Sending...";
-            statusDiv.className = "status";
+            const spinner = document.getElementById('spinner');
+
+            statusDiv.textContent = "";
+            spinner.style.display = "block"; // Show spinner
 
             emailjs.send("service_zigk2gx", "template_fx5mkca", {
                 name: document.getElementById('name').value,
@@ -100,10 +150,12 @@
                 phone: document.getElementById('phone').value,
                 message: document.getElementById('message').value
             }).then(function(response) {
+                spinner.style.display = "none"; // Hide spinner
                 statusDiv.textContent = "Email sent successfully!";
                 statusDiv.className = "status success";
                 document.getElementById('contact-form').reset();
             }, function(error) {
+                spinner.style.display = "none"; // Hide spinner
                 statusDiv.textContent = "Failed to send email. Please try again.";
                 statusDiv.className = "status error";
             });
@@ -111,3 +163,4 @@
     </script>
 </body>
 </html>
+
