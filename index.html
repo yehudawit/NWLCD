@@ -1,162 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NW London Communal Calendar</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f7f8;
-        margin: 0;
-    }
-    header {
-        background-color: #4285f4;
-        color: white;
-        padding: 15px;
-        text-align: center;
-    }
-    .calendar-container {
-        position: relative;
-        padding-bottom: 70%;
-        height: 0;
-        overflow: hidden;
-    }
-    .calendar-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-    .form-container {
-        background: #fff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        width: 90%;
-        max-width: 400px;
-        margin: 20px auto;
-    }
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        font-weight: bold;
-    }
-    label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        display: block;
-    }
-    input, textarea {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-    button {
-        width: 100%;
-        padding: 12px;
-        background: #007BFF;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        font-size: 16px;
-        cursor: pointer;
-    }
-    button:hover {
-        background: #0056b3;
-    }
-    .status {
-        text-align: center;
-        margin-top: 10px;
-        font-size: 14px;
-    }
-    .success { color: green; }
-    .error { color: red; }
-    .spinner {
-        display: none;
-        margin: 10px auto;
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #007BFF;
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    @media (max-width: 600px) {
-        header h1 { font-size: 1.5em; }
-        header p { font-size: 1em; padding: 0 10px; }
-        .calendar-container { padding-bottom: 100%; }
-    }
-</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmailJS Test</title>
 </head>
 <body>
-<header>
-    <h1>📅 NW London Community Calendar</h1>
-    <p>Stay updated with upcoming events and Simchas</p>
-</header>
+<h2>EmailJS Test</h2>
+<button id="send-test">Send Test Email</button>
+<div id="status"></div>
 
-<div class="calendar-container">
-    <iframe src="https://calendar.google.com/calendar/embed?src=M2I2YTVmZDI4N2E5MGZhZDNlNWQzMjc4ZmQxMGY0NjE2MjMyZTUxMGFhYzE0NzRjOGZhZTE5NzkyNWRmZjE4ZkBncm91cC5jYWxlbmRhci5nb29nbGUuY29t&ctz=Europe%2FLondon"></iframe>
-</div>
-
-<div class="form-container">
-    <h2>Register your Event Here</h2>
-    <form id="contact-form">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="phone">Phone Number:</label>
-        <input type="tel" id="phone" name="phone">
-
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-
-        <button type="submit">Submit</button>
-    </form>
-    <div class="spinner" id="spinner"></div>
-    <div class="status" id="status"></div>
-</div>
-
+<!-- EmailJS Script -->
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
     (function(){
         emailjs.init("ugP1IMz3UqAuyW49K"); // Replace with your EmailJS public key
     })();
 
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        event.preventDefault();
+    document.getElementById('send-test').addEventListener('click', function() {
         const statusDiv = document.getElementById('status');
-        const spinner = document.getElementById('spinner');
-
-        statusDiv.textContent = "";
-        spinner.style.display = "block"; // Show spinner
+        statusDiv.textContent = "Sending...";
 
         emailjs.send("service_zigk2gx", "template_fx5mkca", {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            message: document.getElementById('message').value
+            name: "Test User",
+            email: "yehuda@white-peak.co.uk",
+            message: "This is a test message"
         }).then(function(response) {
-            spinner.style.display = "none"; // Hide spinner
-            statusDiv.textContent = "Email sent successfully!";
-            statusDiv.className = "status success";
-            document.getElementById('contact-form').reset();
+            statusDiv.textContent = "✅ Email sent successfully!";
+            console.log("SUCCESS!", response.status, response.text);
         }, function(error) {
-            spinner.style.display = "none"; // Hide spinner
-            statusDiv.textContent = "Failed to send email. Please try again.";
-            statusDiv.className = "status error";
+            statusDiv.textContent = "❌ Failed to send email: " + JSON.stringify(error);
+            console.error("FAILED...", error);
         });
     });
 </script>
